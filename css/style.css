@@ -167,3 +167,14 @@ textarea{min-height:150px;resize:vertical}
 .hero{padding:3.5rem 0 3rem}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* slider */
+.slider{overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#2c333e transparent;padding-bottom:1rem;margin:0 calc(clamp(1.25rem,4vw,2.5rem)*-1);padding-left:clamp(1.25rem,4vw,2.5rem);padding-right:clamp(1.25rem,4vw,2.5rem);scroll-padding-left:clamp(1.25rem,4vw,2.5rem)}
+.track{display:flex;gap:1.5rem;width:max-content}
+.track .card{width:min(340px,78vw);scroll-snap-align:start}
+.slider-ctl{order:4;display:flex;gap:.5rem}
+.sec-head a{order:5}
+.arrow{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--text);display:grid;place-items:center;cursor:pointer;transition:border-color .2s,color .2s,opacity .2s}
+.arrow:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.arrow:disabled{opacity:.35;cursor:default}
+.thumb.contain img,.stage.contain img,.thumbs.contain img{object-fit:contain;background:#0f1217}
+@media (max-width:640px){.sec-head{flex-wrap:wrap}.sec-head::after{display:none}.sec-head a{margin-left:auto}}

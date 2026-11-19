@@ -34,3 +34,14 @@ if(form){form.addEventListener('submit',e=>{
   const body=`${d.get('message')}\n\n— ${d.get('name')} (${d.get('email')})`;
   location.href=`mailto:amryasserds@gmail.com?subject=${encodeURIComponent(d.get('subject'))}&body=${encodeURIComponent(body)}`;
 })}
+// Projects slider
+const slider=document.getElementById('slider');
+if(slider){
+  const prev=document.getElementById('prev'),next=document.getElementById('next');
+  const step=()=>{const c=slider.querySelector('.card');return c?c.getBoundingClientRect().width+24:300};
+  const upd=()=>{prev.disabled=slider.scrollLeft<=2;next.disabled=slider.scrollLeft+slider.clientWidth>=slider.scrollWidth-2};
+  prev.addEventListener('click',()=>slider.scrollBy({left:-step()}));
+  next.addEventListener('click',()=>slider.scrollBy({left:step()}));
+  slider.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd();
+  slider.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){slider.scrollBy({left:step()});e.preventDefault()}if(e.key==='ArrowLeft'){slider.scrollBy({left:-step()});e.preventDefault()}});
+}
