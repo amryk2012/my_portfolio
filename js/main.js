@@ -47,3 +47,11 @@ if(slider){
 }
 // Remove a video element whose file is missing so the placeholder behind it shows
 document.querySelectorAll('video[data-asset] source').forEach(src=>src.addEventListener('error',()=>{const v=src.closest('video');if(v)v.remove()}));
+
+// Hide the video placeholder as soon as the video file has loaded
+document.querySelectorAll('.vslot video').forEach(v=>{
+  const ph=v.parentElement.querySelector('.embed-ph');
+  const hide=()=>{if(ph)ph.style.display='none'};
+  ['loadedmetadata','loadeddata','canplay','play'].forEach(ev=>v.addEventListener(ev,hide));
+  if(v.readyState>=1)hide();
+});

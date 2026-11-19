@@ -181,4 +181,4 @@ textarea{min-height:150px;resize:vertical}
 /* video slots */
 .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
 .vslot{position:relative}
-.vslot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:transparent}
+.vslot video{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:contain;background:#000}
