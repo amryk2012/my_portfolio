@@ -1,17 +1,30 @@
 // Mobile menu
 const btn=document.querySelector('.menu-btn'),list=document.getElementById('nav-list');
 if(btn&&list){btn.addEventListener('click',()=>{const o=list.classList.toggle('open');btn.setAttribute('aria-expanded',o)})}
-// Missing image -> clearly marked placeholder
+// Missing image: try other common extensions (png, jpg, jpeg, webp), then show a labelled placeholder
+const EXTS=['png','jpg','jpeg','webp'];
 function placeholder(img){
   const p=document.createElement('div');p.className='ph';
   p.innerHTML='<b>Image missing</b><code></code>';
-  p.querySelector('code').textContent=img.getAttribute('src');
+  p.querySelector('code').textContent=img.dataset.orig||img.getAttribute('src');
   img.replaceWith(p);
 }
-document.querySelectorAll('img[data-asset]').forEach(img=>{
-  img.addEventListener('error',()=>placeholder(img),{once:true});
-  if(img.complete&&img.naturalWidth===0)placeholder(img);
-});
+function onImgError(img){
+  const src=img.getAttribute('src')||'';
+  const m=/\.(png|jpe?g|webp)$/i.exec(src);
+  if(!img.dataset.orig)img.dataset.orig=src;
+  const tried=(img.dataset.tried||m?.[1]?.toLowerCase()||'').split(',').filter(Boolean);
+  if(m&&!tried.includes(m[1].toLowerCase()))tried.push(m[1].toLowerCase());
+  const next=EXTS.find(e=>!tried.includes(e));
+  if(!m||!next){placeholder(img);return}
+  img.dataset.tried=tried.concat(next).join(',');
+  img.src=src.replace(/\.(png|jpe?g|webp)$/i,'.'+next);
+}
+function watch(img){
+  img.addEventListener('error',()=>onImgError(img));
+  if(img.complete&&img.naturalWidth===0&&img.getAttribute('src'))onImgError(img);
+}
+document.querySelectorAll('img[data-asset]').forEach(watch);
 // Gallery
 const stage=document.getElementById('stage');
 if(stage){
@@ -22,7 +35,7 @@ if(stage){
     const src=b.dataset.src,alt=b.dataset.alt;
     stage.innerHTML='';
     const img=new Image();img.alt=alt;img.setAttribute('data-asset','');img.src=src;
-    img.addEventListener('error',()=>placeholder(img),{once:true});
+    watch(img);
     stage.appendChild(img);
   }));
 }
