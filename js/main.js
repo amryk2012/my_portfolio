@@ -45,3 +45,5 @@ if(slider){
   slider.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd();
   slider.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){slider.scrollBy({left:step()});e.preventDefault()}if(e.key==='ArrowLeft'){slider.scrollBy({left:-step()});e.preventDefault()}});
 }
+// Remove a video element whose file is missing so the placeholder behind it shows
+document.querySelectorAll('video[data-asset] source').forEach(src=>src.addEventListener('error',()=>{const v=src.closest('video');if(v)v.remove()}));
